@@ -1,0 +1,280 @@
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #1a1a1a; /* Dark background */
+    color: #f0f0f0; /* Light text */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #2a2a2a; /* Darker header */
+    border-bottom: 1px solid #444;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #f0f0f0;
+}
+
+.logoSubtext {
+    font-size: 0.75rem;
+    color: #aaa;
+}
+
+.navLink {
+    color: #f0f0f0;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.navLink:hover {
+    transform: scale(1.1);
+    color: #9ccc65;
+}
+
+.userActions {
+    display: flex;
+    gap: 1rem;
+    position: relative; /* For dropdown positioning */
+}
+
+.actionButton {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+}
+
+.actionButton:hover {
+    transform: scale(1.05);
+}
+
+.actionButton.tenant {
+    background-color: #333;
+    color: #f0f0f0;
+    border: 1px solid #555;
+}
+
+.actionButton.tenant:hover {
+    background-color: #444;
+}
+
+.actionButton.owner {
+    background-color: #2a5b3e;
+    color: #ffffff;
+    border: 1px solid #2a5b3e;
+}
+
+.actionButton.owner:hover {
+    background-color: #1e422d;
+}
+
+.dropdownContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    transform-origin: top;
+    animation: dropdownFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes dropdownFadeIn {
+    from { opacity: 0; transform: scaleY(0); }
+    to { opacity: 1; transform: scaleY(1); }
+}
+
+.dropdownItem {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.2s ease;
+}
+
+.dropdownItem:hover {
+    background-color: #f1f1f1;
+    color: #2a5b3e;
+}
+
+.registerBanner {
+    background-color: #2a5b3e;
+    color: #ffffff;
+    padding: 2rem;
+    text-align: center;
+}
+
+.registerBanner h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.formContainer {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    background-color: #2a2a2a; /* Dark form background */
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid #444;
+    width: 100%;
+    max-width: 800px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.step2FormContainer {
+    gap: 2rem;
+    padding: 2rem;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.uploadSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: #9ccc65; /* Green accent text */
+    font-weight: bold;
+}
+
+.uploadCircle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #2a5b3e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.uploadCircle:hover {
+    background-color: #1e422d;
+    transform: scale(1.05);
+}
+
+.formSection {
+    flex-grow: 1;
+}
+
+.registerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.formRow {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.inputGroup {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-grow: 1;
+}
+
+.inputGroup label {
+    font-weight: bold;
+    color: #9ccc65; /* Green accent text */
+    min-width: 100px;
+    text-align: right;
+}
+
+.input, .selectInput {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #555;
+    border-radius: 20px;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+    background-color: #333; /* Dark input background */
+    color: #f0f0f0; /* Light input text */
+}
+
+.input:focus, .selectInput:focus {
+    border-color: #9ccc65;
+    box-shadow: 0 0 10px rgba(156, 204, 101, 0.5);
+    outline: none;
+}
+
+.radioGroup {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.radioLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #f0f0f0;
+    font-weight: normal;
+}
+
+.radioInput {
+    width: 20px;
+    height: 20px;
+    accent-color: #9ccc65;
+}
+
+.submitButton {
+    margin-top: 1.5rem;
+    background-color: #2a5b3e;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.25rem;
+    padding: 0.75rem 2.5rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    align-self: center;
+}
+
+.submitButton:hover {
+    background-color: #1e422d;
+    transform: scale(1.05);
+}

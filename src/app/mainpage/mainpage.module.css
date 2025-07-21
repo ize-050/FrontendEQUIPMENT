@@ -1,0 +1,197 @@
+
+@keyframes slowZoom {
+    from { background-size: 100% auto; }
+    to { background-size: 110% auto; }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+    color: #fff;
+}
+
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    z-index: 10;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.logoContainer {
+    text-align: left;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.logoSubtext {
+    font-size: 0.75rem;
+    color: #eee;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.navLink {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.navLink:hover {
+    text-shadow: 0 0 5px #fff;
+}
+
+.userActions {
+    display: flex;
+    gap: 1rem;
+    position: relative; /* For dropdown positioning */
+}
+
+.actionButton {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #fff;
+}
+
+.actionButton:hover {
+    transform: scale(1.05);
+}
+
+.actionButton.tenant {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #2a5b3e;
+}
+
+.actionButton.owner {
+    background-color: #2a5b3e;
+    color: #ffffff;
+    border-color: #2a5b3e;
+}
+
+.dropdownContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    transform-origin: top;
+    animation: dropdownFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes dropdownFadeIn {
+    from { opacity: 0; transform: scaleY(0); }
+    to { opacity: 1; transform: scaleY(1); }
+}
+
+.dropdownItem {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.2s ease;
+}
+
+.dropdownItem:hover {
+    background-color: #f1f1f1;
+    color: #2a5b3e;
+}
+
+.heroSection {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-image: url('https://images.unsplash.com/photo-1623460419156-a1c11956047a?q=80&w=2070&auto=format&fit=crop');
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: slowZoom 20s infinite alternate ease-in-out;
+    position: relative;
+}
+
+.heroOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(42, 91, 62, 0.6); /* Dark green overlay */
+}
+
+.heroContent {
+    position: relative;
+    z-index: 2;
+}
+
+.heroTitle {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+}
+
+.heroTitle span {
+    display: inline-block;
+    opacity: 0;
+    animation: fadeInDown 0.8s ease-out forwards;
+}
+
+.heroTitle span:nth-child(1) { animation-delay: 0.2s; }
+.heroTitle span:nth-child(2) { animation-delay: 0.4s; }
+.heroTitle span:nth-child(3) { animation-delay: 0.6s; }
+.heroTitle span:nth-child(4) { animation-delay: 0.8s; }
+
+.heroButton {
+    background-color: #fff;
+    color: #2a5b3e;
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: 1rem 3rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    opacity: 0;
+    animation: fadeInUp 1s 1s ease-out forwards;
+}
+
+.heroButton:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}

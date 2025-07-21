@@ -1,0 +1,220 @@
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    color: #333;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    background-color: #000; /* Black header */
+    color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.logoContainer {
+    text-align: left;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.logoSubtext {
+    font-size: 0.6rem;
+    color: #ccc;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.navLink {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.navLink:hover {
+    text-shadow: 0 0 5px #fff;
+}
+
+.userActions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #fff;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.profile:hover {
+    box-shadow: 0 0 10px rgba(255,255,255,0.3);
+    transform: scale(1.02);
+}
+
+.hamburgerIcon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hamburgerIcon:hover {
+    color: #ccc;
+}
+
+.main {
+    padding: 2rem;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2a5b3e;
+    margin-bottom: 2rem;
+    text-decoration: underline;
+    text-decoration-color: #2a5b3e;
+    text-underline-offset: 8px;
+}
+
+.statusBox {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    max-width: 1000px;
+    margin: auto;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.timelineTop, .timelineBottom {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    position: relative;
+    z-index: 2;
+}
+
+.timelineTop {
+    margin-bottom: 4rem;
+}
+
+.timelineStep {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    position: relative;
+    padding: 0 10px;
+}
+
+.iconWrapper {
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    color: #2a5b3e;
+}
+
+.timelineStep:hover .iconWrapper {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.timelineStep p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.3;
+}
+
+.timelineLineTop, .timelineLineBottom {
+    position: absolute;
+    height: 4px;
+    background-color: #ff0000; /* Red line */
+    left: 5%;
+    right: 5%;
+    z-index: 1;
+}
+
+.timelineLineTop {
+    top: 80px; /* Adjust based on icon position */
+}
+
+.timelineLineBottom {
+    bottom: 80px; /* Adjust based on icon position */
+}
+
+.timelineLineTop::before, .timelineLineBottom::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    top: -5.5px;
+    left: 0;
+    transform: translateX(-50%);
+}
+
+.timelineLineTop::after, .timelineLineBottom::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    top: -5.5px;
+    right: 0;
+    transform: translateX(50%);
+}
+
+.timelineConnector {
+    position: absolute;
+    width: 4px;
+    background-color: #ff0000;
+    top: 80px; /* Start from top line */
+    bottom: 80px; /* End at bottom line */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.contactOwner {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.1rem;
+    color: #2a5b3e;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.contactOwner:hover {
+    text-decoration: underline;
+    transform: translateY(-2px);
+}

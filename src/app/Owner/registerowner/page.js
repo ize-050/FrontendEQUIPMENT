@@ -1,0 +1,230 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import styles from './registerowner.module.css';
+
+const CameraIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="60" height="60">
+    <path d="M20 4h-3.17L15 2H9L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+    <path d="M12 15c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3z"/>
+    <path d="M18 10h-2v-2h-2v2h-2v2h2v2h2v-2h2z"/>
+  </svg>
+);
+
+const Step1Form = ({ onNext, username, setUsername, password, setPassword, confirmPassword, setConfirmPassword, email, setEmail }) => (
+  <>
+    <div className={styles.formContainer}>
+      <div className={styles.uploadSection}>
+        <div className={styles.uploadCircle}>
+          <CameraIcon />
+        </div>
+        <p>อัพโหลดรูป</p>
+      </div>
+      <div className={styles.formSection}>
+        <form className={styles.registerForm}>
+          <div className={styles.inputGroup}>
+            <label htmlFor="username">ชื่อบัญชีผู้ใช้งาน</label>
+            <input type="text" id="username" className={styles.input} value={username} onChange={(e) => setUsername(e.target.value)} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="password">รหัสผ่าน</label>
+            <input type="password" id="password" className={styles.input} value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="confirmPassword">ยืนยันรหัสผ่าน</label>
+            <input type="password" id="confirmPassword" className={styles.input} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="email">อีเมล</label>
+            <input type="email" id="email" className={styles.input} value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+        </form>
+      </div>
+    </div>
+    <button type="button" onClick={onNext} className={styles.submitButton}>ถัดไป</button>
+  </>
+);
+
+const Step2Form = ({ handleSubmit, firstName, setFirstName, lastName, setLastName, gender, setGender, dobDay, setDobDay, dobMonth, setDobMonth, dobYear, setDobYear, contactNumber, setContactNumber, houseNumber, setHouseNumber, soi, setSoi, moo, setMoo, subDistrict, setSubDistrict, district, setDistrict, province, setProvince, postalCode, setPostalCode }) => (
+    <div className={`${styles.formContainer} ${styles.step2FormContainer}`}>
+        <form className={styles.registerForm} onSubmit={handleSubmit}>
+            <div className={styles.formRow}>
+                <div className={styles.inputGroup}><label>ชื่อ</label><input type="text" className={styles.input} value={firstName} onChange={(e) => setFirstName(e.target.value)} /></div>
+                <div className={styles.inputGroup}><label>นามสกุล</label><input type="text" className={styles.input} value={lastName} onChange={(e) => setLastName(e.target.value)} /></div>
+            </div>
+            <div className={styles.inputGroup}>
+                <label>เพศ</label>
+                <div className={styles.radioGroup}>
+                    <label className={styles.radioLabel}><input type="radio" name="gender" value="female" className={styles.radioInput} checked={gender === 'female'} onChange={(e) => setGender(e.target.value)} /> หญิง</label>
+                    <label className={styles.radioLabel}><input type="radio" name="gender" value="male" className={styles.radioInput} checked={gender === 'male'} onChange={(e) => setGender(e.target.value)} /> ชาย</label>
+                    <label className={styles.radioLabel}><input type="radio" name="gender" value="other" className={styles.radioInput} checked={gender === 'other'} onChange={(e) => setGender(e.target.value)} /> ไม่ระบุ</label>
+                </div>
+            </div>
+            <div className={styles.formRow}>
+                <div className={styles.inputGroup}><label>วันเกิด</label><input type="text" placeholder="วัน" className={styles.input} value={dobDay} onChange={(e) => setDobDay(e.target.value)} /></div>
+                <div className={styles.inputGroup}><input type="text" placeholder="เดือน" className={styles.input} value={dobMonth} onChange={(e) => setDobMonth(e.target.value)} /></div>
+                <div className={styles.inputGroup}><input type="text" placeholder="ปี" className={styles.input} value={dobYear} onChange={(e) => setDobYear(e.target.value)} /></div>
+            </div>
+            <div className={styles.inputGroup}><label>เบอร์ติดต่อ</label><input type="text" className={styles.input} value={contactNumber} onChange={(e) => setContactNumber(e.target.value)} /></div>
+            <div className={styles.formRow}>
+                <div className={styles.inputGroup}><label>บ้านเลขที่</label><input type="text" className={styles.input} value={houseNumber} onChange={(e) => setHouseNumber(e.target.value)} /></div>
+                <div className={styles.inputGroup}><label>ซอย</label><input type="text" className={styles.input} value={soi} onChange={(e) => setSoi(e.target.value)} /></div>
+                <div className={styles.inputGroup}><label>หมู่</label><input type="text" className={styles.input} value={moo} onChange={(e) => setMoo(e.target.value)} /></div>
+            </div>
+            <div className={styles.formRow}>
+                <div className={styles.inputGroup}><label>ตำบล/แขวง</label><select className={styles.selectInput} value={subDistrict} onChange={(e) => setSubDistrict(e.target.value)}><option>เลือก...</option></select></div>
+                <div className={styles.inputGroup}><label>อำเภอ/เขต</label><select className={styles.selectInput} value={district} onChange={(e) => setDistrict(e.target.value)}><option>เลือก...</option></select></div>
+            </div>
+            <div className={styles.formRow}>
+                <div className={styles.inputGroup}><label>จังหวัด</label><select className={styles.selectInput} value={province} onChange={(e) => setProvince(e.target.value)}><option>เลือก...</option></select></div>
+                <div className={styles.inputGroup}><label>รหัสไปรษณีย์</label><input type="text" className={styles.input} value={postalCode} onChange={(e) => setPostalCode(e.target.value)} /></div>
+            </div>
+            <button type="submit" className={styles.submitButton}>สมัครสมาชิก</button>
+        </form>
+    </div>
+);
+
+export default function RegisterOwnerPage() {
+  const [step, setStep] = useState(1);
+  const [isTenantDropdownOpen, setIsTenantDropdownOpen] = useState(false);
+  const [isOwnerDropdownOpen, setIsOwnerDropdownOpen] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState('');
+
+  // Step 2 states
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [gender, setGender] = useState('');
+  const [dobDay, setDobDay] = useState('');
+  const [dobMonth, setDobMonth] = useState('');
+  const [dobYear, setDobYear] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
+  const [houseNumber, setHouseNumber] = useState('');
+  const [soi, setSoi] = useState('');
+  const [moo, setMoo] = useState('');
+  const [subDistrict, setSubDistrict] = useState('');
+  const [district, setDistrict] = useState('');
+  const [province, setProvince] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+
+  const handleNext = () => {
+    setStep(2);
+  };
+
+  const toggleTenantDropdown = () => {
+    setIsTenantDropdownOpen(!isTenantDropdownOpen);
+    setIsOwnerDropdownOpen(false); // Close other dropdown
+  };
+
+  const toggleOwnerDropdown = () => {
+    setIsOwnerDropdownOpen(!isOwnerDropdownOpen);
+    setIsTenantDropdownOpen(false); // Close other dropdown
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+
+    // Combine data from both steps
+    const registrationData = {
+      username,
+      password,
+      email,
+      firstName,
+      lastName,
+      gender,
+      dob: `${dobYear}-${dobMonth}-${dobDay}`,
+      contactNumber,
+      address: {
+        houseNumber,
+        soi,
+        moo,
+        subDistrict,
+        district,
+        province,
+        postalCode,
+      },
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/api/owner/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(registrationData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Registration successful!' + JSON.stringify(data));
+        // Optionally, redirect user or show success message
+      } else {
+        alert('Registration failed: ' + (data.message || 'Unknown error'));
+      }
+    } catch (error) {
+      alert('An error occurred: ' + error.message);
+    }
+  };
+
+  return (
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <div className={styles.logoContainer}>
+          <div>
+            <div className={styles.logo}>SMART/AGRIRENT</div>
+            <div className={styles.logoSubtext}>AGRICULTURAL EQUIPMENT RENTAL PLATFORM</div>
+          </div>
+        </div>
+        <nav className={styles.nav}>
+          <a href="#" className={styles.navLink}>หน้าแรก v</a>
+          <a href="#" className={styles.navLink}>ค้นหาเครื่องจักร v</a>
+          <a href="#" className={styles.navLink}>นโยบายส่วนตัว v</a>
+        </nav>
+        <div className={styles.userActions}>
+          <div className={styles.dropdownContainer}>
+            <button className={`${styles.actionButton} ${styles.tenant}`} onClick={toggleTenantDropdown}>
+              ผู้เช่า v
+            </button>
+            {isTenantDropdownOpen && (
+              <div className={styles.dropdownMenu}>
+                <Link href="/Farmer/login" className={styles.dropdownItem}>เข้าสู่ระบบ</Link>
+                <Link href="/Farmer/register" className={styles.dropdownItem}>สมัครสมาชิก</Link>
+              </div>
+            )}
+          </div>
+          <div className={styles.dropdownContainer}>
+            <button className={`${styles.actionButton} ${styles.owner}`} onClick={toggleOwnerDropdown}>
+              เจ้าของเครื่องมือ v
+            </button>
+            {isOwnerDropdownOpen && (
+              <div className={styles.dropdownMenu}>
+                <Link href="/Owner/loginowner" className={styles.dropdownItem}>เข้าสู่ระบบ</Link>
+                <Link href="/Owner/registerowner" className={styles.dropdownItem}>สมัครสมาชิก</Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <div className={styles.registerBanner}>
+        <h1>เจ้าของเครื่องมือ : Register/สมัครสมาชิก</h1>
+      </div>
+
+      <main className={styles.main}>
+        {step === 1 ? <Step1Form onNext={handleNext} username={username} setUsername={setUsername} password={password} setPassword={setPassword} confirmPassword={confirmPassword} setConfirmPassword={setConfirmPassword} email={email} setEmail={setEmail} /> : <Step2Form handleSubmit={handleSubmit} firstName={firstName} setFirstName={setFirstName} lastName={lastName} setLastName={setLastName} gender={gender} setGender={setGender} dobDay={dobDay} setDobDay={setDobDay} dobMonth={dobMonth} setDobMonth={setDobMonth} dobYear={dobYear} setDobYear={setDobYear} contactNumber={contactNumber} setContactNumber={setContactNumber} houseNumber={houseNumber} setHouseNumber={setHouseNumber} soi={soi} setSoi={setSoi} moo={moo} setMoo={setMoo} subDistrict={subDistrict} setSubDistrict={setSubDistrict} district={district} setDistrict={setDistrict} province={province} setProvince={setProvince} postalCode={postalCode} setPostalCode={setPostalCode} />}
+      </main>
+    </div>
+  );
+}
+   
+  
+
+   

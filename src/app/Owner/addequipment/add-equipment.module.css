@@ -1,0 +1,255 @@
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    color: #333;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logoContainer {
+    text-align: left;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #2a5b3e;
+}
+
+.logoSubtext {
+    font-size: 0.6rem;
+    color: #6c757d;
+}
+
+.navWrapper {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: #ffeb3b; /* Yellow background */
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+}
+
+.navLink {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.navLink:hover {
+    transform: translateY(-2px);
+    color: #000;
+}
+
+.userActions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.profile:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transform: scale(1.02);
+}
+
+.profileImage {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.hamburgerIcon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hamburgerIcon:hover {
+    color: #000;
+}
+
+.main {
+    padding: 2rem;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2a5b3e;
+    margin-bottom: 2rem;
+}
+
+.formContainer {
+    display: flex;
+    gap: 3rem;
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 3rem;
+    border-radius: 25px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.formContainer:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+}
+
+.uploadSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: #2a5b3e;
+    font-weight: bold;
+    flex-basis: 200px;
+}
+
+.uploadCircle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #2a5b3e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 5px 15px rgba(42, 91, 62, 0.4);
+}
+
+.uploadCircle:hover {
+    background-color: #1e422d;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 25px rgba(42, 91, 62, 0.6);
+}
+
+.form {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.inputGroup {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.inputGroup label {
+    font-weight: bold;
+    color: #2a5b3e;
+    flex-basis: 120px;
+    padding-top: 0.5rem;
+}
+
+.input, .select, .textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+    background-color: #f9f9f9;
+}
+
+.input:focus, .select:focus, .textarea:focus {
+    border-color: #ffeb3b;
+    box-shadow: 0 0 10px rgba(255, 235, 59, 0.7);
+    outline: none;
+    background-color: #fff;
+}
+
+.textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.priceInputWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.priceInput {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+    background-color: #f9f9f9;
+}
+
+.plusButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.plusButton:hover {
+    transform: scale(1.2);
+}
+
+.submitButtonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.submitButton {
+    background-color: #ffeb3b; /* Yellow button */
+    color: #333;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 15px rgba(255, 235, 59, 0.4);
+}
+
+.submitButton:hover {
+    background-color: #fdd835;
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 235, 59, 0.6);
+}
