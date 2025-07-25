@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import styles from './login.module.css';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const UserIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="20" height="20">
@@ -27,25 +29,58 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('http://localhost:8000/api/farmer/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
+
+    if(!username || !password){
+      Swal.fire({
+        icon: 'error',
+        title: 'กรุณากรอกข้อมูล',
+        text: 'กรุณากรอกข้อมูลให้ครบถ้วน',
       });
+      return;
+    }
 
-      const data = await response.json();
+   
 
-      if (response.ok) {
-        alert('Login successful!' + JSON.stringify(data));
-        // Optionally, redirect user or save token
+    const loginData = {
+      farmerUserName: username,
+      farmerPassword: password,
+    };
+
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/farmer/login`, loginData); //http proto
+
+      if (response.status === 200) {
+        // Store login response in localStorage
+        const loginResponse = response.data;
+        localStorage.setItem('farmerAuth', JSON.stringify({
+          token: loginResponse.token,
+          type: loginResponse.type,
+          farmerId: loginResponse.farmerId,
+          username: loginResponse.username,
+          message: loginResponse.message
+        }));
+
+        Swal.fire({
+          icon: 'success',
+          title: 'เข้าสู่ระบบสำเร็จ!',
+          text: loginResponse.message,
+        }).then(() => {
+          // Redirect to home page after successful login
+          window.location.href = '/';
+        });
       } else {
-        alert('Login failed: ' + (data.message || 'Unknown error'));
+        Swal.fire({
+          icon: 'error',
+          title: 'เข้าสู่ระบบไม่สำเร็จ!',
+          text: 'Unknown error',
+        });
       }
     } catch (error) {
-      alert('An error occurred: ' + error.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Login failed!',
+        text: 'An error occurred: ' + error.message,
+      });
     }
   };
 
