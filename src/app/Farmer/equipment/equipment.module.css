@@ -1,0 +1,213 @@
+.container {
+  background-color: #f7f7f7; /* Lighter background */
+  color: #333;
+}
+
+.main {
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.sidebar {
+  background-color: #004d38; /* Brighter green */
+  color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 250px;
+  height: fit-content;
+}
+
+.categoryTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid white;
+  padding-bottom: 0.5rem;
+}
+
+.categoryList {
+  list-style: none;
+  padding: 0;
+}
+
+.categoryList li {
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+}
+
+/* New container for the booking form */
+.bookingContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.bookingSection {
+    display: flex;
+    gap: 1rem;
+}
+
+.datePicker {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.datePicker label {
+    font-weight: bold;
+    color: #555;
+}
+
+.datePicker input {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px; /* Adjust width as needed */
+}
+
+.addressInputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.addressInputWrapper label {
+    font-weight: bold;
+    color: #555;
+}
+
+.addressInput {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.bookButton {
+  background-color: #e64a19; /* Softer Red */
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 1rem; /* Add some space above the button */
+  transition: background-color 0.3s;
+}
+
+.bookButton:hover {
+    background-color: #d84315;
+}
+
+/* Header styles */
+.header {
+  background-color: #004d38; /* Brighter green */
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoContainer {
+  background-color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #004d38; /* Brighter green */
+  text-decoration: none;
+}
+
+.logoSmallText {
+    font-size: 0.8rem;
+    color: #004d38;
+}
+
+.navLinks {
+  display: flex;
+  gap: 2rem;
+  font-size: 1.1rem;
+}
+
+.navLink {
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  transition: color 0.3s;
+}
+
+.navLink:hover {
+    color: #f2c200; /* Yellow on hover */
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userProfile {
+  border: 2px solid white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.userProfile:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menuIcon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.searchBarContainer {
+    background-color: #005a43;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.searchBar {
+    width: 60%;
+    display: flex;
+}
+
+.searchInput {
+    flex-grow: 1;
+    padding: 0.75rem;
+    border: none;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    font-size: 1rem;
+}
+
+.searchButton {
+    background-color: #fdd835; /* Brighter Yellow */
+    color: #004d38;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    font-weight: bold;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.searchButton:hover {
+    background-color: #fbc02d;
+}

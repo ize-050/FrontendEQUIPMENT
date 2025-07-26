@@ -89,7 +89,7 @@ export default function MainHeader() {
                 {user.userType === 'owner' ? (
                   // Owner menu options
                   <>
-                    <Link href="/owner/equipment" className={styles.dropdownItem}>จัดการอุปกรณ์</Link>
+                    <Link href="/owner/equipment" className={styles.dropdownItem}>รายการอุปกรณ์ของฉัน</Link>
                     <Link href="/owner/bookings" className={styles.dropdownItem}>รายการจอง</Link>
                     <Link href="/owner/delivery-update" className={styles.dropdownItem}>update การจัดส่งรับสินค้า</Link>
                     <Link href="/owner/delivery-list" className={styles.dropdownItem}>รายการจัดส่งรับสินค้า</Link>

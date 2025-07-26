@@ -39,8 +39,48 @@ export default function LoginPage() {
       return;
     }
 
-   
+    if (username.length < 6 || username.length > 20) {
+      Swal.fire({
+        icon: 'error',
+        title: 'ชื่อผู้ใช้ไม่ถูกต้อง',
+        text: 'ชื่อผู้ใช้ต้องมีความยาวตั้งแต่ 6 ถึง 20 ตัวอักษร',
+      });
+      return;
+    }
 
+    const usernamePattern = /^[A-Za-z0-9]+$/;
+      if (!usernamePattern.test(username)) {
+        Swal.fire({
+         icon: 'error',
+         title: 'ชื่อผู้ใช้ไม่ถูกต้อง',
+         text: 'ชื่อผู้ใช้ต้องเป็นภาษาอังกฤษหรือตัวเลขเท่านั้น และห้ามมีเว้นวรรค',
+        });
+        return;
+    }
+
+    
+    if (password.length < 8 || password.length > 16) {
+        Swal.fire({
+          icon: 'error',
+          title: 'รหัสผ่านไม่ถูกต้อง',
+          text: 'รหัสผ่านต้องมีความยาวตั้งแต่ 8 ถึง 16 ตัวอักษร',
+        });
+        return;
+    }
+
+
+    const passwordPattern = /^[A-Za-z0-9!#_.]+$/;
+    if (!passwordPattern.test(password)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'รหัสผ่านไม่ถูกต้อง',
+          text: 'รหัสผ่านต้องเป็นภาษาอังกฤษหรือตัวเลข และใช้อักขระพิเศษเฉพาะ ! # _ . เท่านั้น และห้ามมีเว้นวรรค',
+        });
+        return;
+    }
+
+
+    
     const loginData = {
       farmerUserName: username,
       farmerPassword: password,

@@ -1,0 +1,84 @@
+.header {
+  background-color: #003325; /* Dark green */
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoContainer {
+  background-color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #003325; /* Dark green */
+}
+
+.logoSmallText {
+    font-size: 0.8rem;
+    color: #003325;
+}
+
+.navLinks {
+  display: flex;
+  gap: 2rem;
+  font-size: 1.1rem;
+}
+
+.navLink {
+  cursor: pointer;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userProfile {
+  border: 2px solid white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.menuIcon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.searchBarContainer {
+    background-color: #004d38;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.searchBar {
+    width: 60%;
+    display: flex;
+}
+
+.searchInput {
+    flex-grow: 1;
+    padding: 0.75rem;
+    border: none;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.searchButton {
+    background-color: #f2c200; /* Yellow */
+    color: #003325;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    font-weight: bold;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: pointer;
+}
