@@ -1,26 +1,132 @@
-.pageContainer {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #ffffff;
-}
+
 
 .mainContent {
-  flex-grow: 1;
-  padding: 2rem 5rem;
+  height: 100vh;
+  margin-top: 5rem;
+  background-color: #fff;
+  padding: 2rem 4rem;
 }
 
 .title {
-  font-family: sans-serif;
-  font-size: 2.2rem;
-  font-weight: bold;
-  color: #000000;
-  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
   padding-bottom: 0.5rem;
-  border-bottom: 3px solid #000000;
-  display: inline-block;
 }
 
-.placeholder {
-  margin-top: 2rem;
+.loadingText, .errorText {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #888;
+  margin-top: 4rem;
+}
+
+.errorText {
+  color: #d9534f;
+}
+
+.equipmentGrid {
+  
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.equipmentCard {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.equipmentCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.equipmentImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.equipmentInfo {
+  padding: 1.5rem;
+}
+
+.equipmentName {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.equipmentPrice {
+  font-size: 1rem;
+  color: #555;
+  margin: 0 0 1rem 0;
+}
+
+.equipmentStatus {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  display: inline-block;
+  color: #fff;
+}
+
+.available {
+  background-color: #5cb85c; /* Green */
+}
+
+.rented {
+  background-color: #f0ad4e; /* Orange */
+}
+
+.unavailable {
+  background-color: #d9534f; /* Red */
+}
+
+.statusBadge.available {
+  background-color: #28a745;
+}
+
+.cardActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid #eee;
+  margin-top: 0.5rem;
+}
+
+.editButton, .deleteButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.editButton {
+  background-color: #007bff; /* Blue */
+}
+
+.editButton:hover {
+  background-color: #0056b3;
+}
+
+.deleteButton {
+  background-color: #dc3545; /* Red */
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
 }

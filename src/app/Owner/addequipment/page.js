@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import MainHeader from '../../../components/MainHeader';
 import styles from './add-equipment.module.css';
 import Swal from 'sweetalert2';
@@ -26,14 +28,11 @@ const HamburgerIcon = () => (
 );
 
 export default function AddEquipmentPage() {
-  const [equipmentName, setEquipmentName] = useState('');
-  const [category, setCategory] = useState('');
-  const [properties, setProperties] = useState('');
-  const [description, setDescription] = useState('');
-  const [address, setAddress] = useState('');
-  const [price, setPrice] = useState('');
+  const router = useRouter();
   const [image, setImage] = useState(null); // State to store the image file
   const [imagePreview, setImagePreview] = useState(null); // State to store the image preview URL
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -43,49 +42,45 @@ export default function AddEquipmentPage() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!equipmentName || !category || !properties || !description || !address || !price || !image) {
-      Swal.fire({
-        icon: 'error',
-        title: 'กรุณากรอกข้อมูล',
-        text: 'กรุณากรอกข้อมูลให้ครบถ้วนและเลือกรูปภาพ',
-      });
-      return;
-    }
-
+  const onSubmit = async (data) => {
     const formData = new FormData();
-    formData.append('equipmentName', equipmentName);
-    formData.append('category', category);
-    formData.append('properties', properties);
-    formData.append('description', description);
-    formData.append('address', address);
-    formData.append('price', parseFloat(price));
+    formData.append('equipmentName', data.equipmentName);
+    formData.append('category', data.category);
+    formData.append('properties', data.properties);
+    formData.append('description', data.description);
+    formData.append('address', data.address);
+    formData.append('price', parseFloat(data.price));
     formData.append('image', image); // Append the image file
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/equipment/add`, formData, {
+      const ownerAuth = JSON.parse(localStorage.getItem('ownerAuth'));
+      const token = ownerAuth?.token;
+
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'ไม่ได้เข้าสู่ระบบ',
+          text: 'กรุณาเข้าสู่ระบบก่อนเพิ่มอุปกรณ์',
+        });
+        return;
+      }
+
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/equipment/create`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`,
         },
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) { // Check for 201 Created status
         Swal.fire({
           icon: 'success',
           title: 'เพิ่มอุปกรณ์สำเร็จ!',
           text: response.data.message,
-        }).then(() => {
-          // Optionally clear form or redirect
-          setEquipmentName('');
-          setCategory('');
-          setProperties('');
-          setDescription('');
-          setAddress('');
-          setPrice('');
-          setImage(null); // Clear image state
-          setImagePreview(null); // Clear image preview
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push('/Owner/listequipment');
+          }
         });
       } else {
         Swal.fire({
@@ -106,28 +101,8 @@ export default function AddEquipmentPage() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.logoContainer}>
-            <div className={styles.logo}>SMART/AGRIRENT</div>
-            <div className={styles.logoSubtext}>AGRICULTURAL EQUIPMENT RENTAL PLATFORM</div>
-        </div>
-        <div className={styles.navWrapper}>
-            <nav className={styles.nav}>
-                <a href="#" className={styles.navLink}>หน้าแรก v</a>
-                <a href="#" className={styles.navLink}>ค้นหาเครื่องจักร v</a>
-                <a href="#" className={styles.navLink}>นโยบายส่วนตัว v</a>
-            </nav>
-        </div>
-        <div className={styles.userActions}>
-            <div className={styles.profile}>
-                <img src="/user-placeholder.svg" alt="Somboy" className={styles.profileImage} />
-                <span>Somboy</span>
-            </div>
-            <HamburgerIcon />
-        </div>
-      </header>
-
-      <main className={styles.main}>
+      <MainHeader/>
+      <main className={styles.main} style={{ marginTop: '5rem' }}>
         <h1 className={styles.title}>เพิ่มอุปกรณ์</h1>
         <div className={styles.formContainer}>
             <div className={styles.uploadSection}>
@@ -147,17 +122,83 @@ export default function AddEquipmentPage() {
                 />
                 <p>อัพโหลดภาพสินค้า</p>
             </div>
-            <form className={styles.form} onSubmit={handleSubmit}>
-                <div className={styles.inputGroup}><label>ชื่อสินค้า :</label><input type="text" className={styles.input} value={equipmentName} onChange={(e) => setEquipmentName(e.target.value)} /></div>
-                <div className={styles.inputGroup}><label>หมวดหมู่ :</label><select className={styles.select} value={category} onChange={(e) => setCategory(e.target.value)}><option value="">เลือกหมวดหมู่</option><option value="Tractor">รถไถ</option><option value="Harvester">รถเกี่ยวข้าว</option></select></div>
-                <div className={styles.inputGroup}><label>คุณสมบัติ :</label><input type="text" className={styles.input} value={properties} onChange={(e) => setProperties(e.target.value)} /></div>
-                <div className={styles.inputGroup}><label>รายละเอียด :</label><textarea className={styles.textarea} value={description} onChange={(e) => setDescription(e.target.value)}></textarea></div>
-                <div className={styles.inputGroup}><label>ที่อยู่ของสินค้า :</label><textarea className={styles.textarea} value={address} onChange={(e) => setAddress(e.target.value)}></textarea></div>
+            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+                <div className={styles.inputGroup}>
+                    <label>ชื่อสินค้า :</label>
+                    <div className={styles.inputWrapper}>
+                        <input 
+                            type="text" 
+                            className={`${styles.input} ${errors.equipmentName ? styles.inputError : ''}`}
+                            {...register('equipmentName', { required: 'กรุณากรอกชื่อสินค้า' })}
+                        />
+                        {errors.equipmentName && <span className={styles.errorText}>{errors.equipmentName.message}</span>}
+                    </div>
+                </div>
+                
+                <div className={styles.inputGroup}>
+                    <label>หมวดหมู่ :</label>
+                    <div className={styles.inputWrapper}>
+                        <select 
+                            className={`${styles.select} ${errors.category ? styles.inputError : ''}`}
+                            {...register('category', { required: 'กรุณาเลือกหมวดหมู่' })}
+                        >
+                            <option value="">เลือกหมวดหมู่</option>
+                            <option value="Tractor">รถไถ</option>
+                            <option value="Harvester">รถเกี่ยวข้าว</option>
+                        </select>
+                        {errors.category && <span className={styles.errorText}>{errors.category.message}</span>}
+                    </div>
+                </div>
+                
+                <div className={styles.inputGroup}>
+                    <label>คุณสมบัติ :</label>
+                    <div className={styles.inputWrapper}>
+                        <input 
+                            type="text" 
+                            className={`${styles.input} ${errors.properties ? styles.inputError : ''}`}
+                            {...register('properties', { required: 'กรุณากรอกรายละเอียดคุณสมบัติ' })}
+                        />
+                        {errors.properties && <span className={styles.errorText}>{errors.properties.message}</span>}
+                    </div>
+                </div>
+                
+                <div className={styles.inputGroup}>
+                    <label>รายละเอียด :</label>
+                    <div className={styles.inputWrapper}>
+                        <textarea 
+                            className={`${styles.textarea} ${errors.description ? styles.inputError : ''}`}
+                            {...register('description', { required: 'กรุณากรอกรายละเอียดสินค้า' })}
+                        ></textarea>
+                        {errors.description && <span className={styles.errorText}>{errors.description.message}</span>}
+                    </div>
+                </div>
+                
+                <div className={styles.inputGroup}>
+                    <label>ที่อยู่ของสินค้า :</label>
+                    <div className={styles.inputWrapper}>
+                        <textarea 
+                            className={`${styles.textarea} ${errors.address ? styles.inputError : ''}`}
+                            {...register('address', { required: 'กรุณากรอกที่อยู่ของสินค้า' })}
+                        ></textarea>
+                        {errors.address && <span className={styles.errorText}>{errors.address.message}</span>}
+                    </div>
+                </div>
+                
                 <div className={styles.inputGroup}>
                     <label>ราคาที่ปล่อยเช่า :</label>
-                    <div className={styles.priceInputWrapper}>
-                        <input type="text" className={styles.priceInput} value={price} onChange={(e) => setPrice(e.target.value)} />
-                        <button type="button" className={styles.plusButton}><PlusIcon /></button>
+                    <div className={styles.inputWrapper}>
+                        <div className={styles.priceInputWrapper}>
+                            <input 
+                                type="number" 
+                                className={`${styles.priceInput} ${errors.price ? styles.inputError : ''}`}
+                                {...register('price', { 
+                                    required: 'กรุณากรอกราคา', 
+                                    min: { value: 1, message: 'ราคาต้องมากกว่า 0' } 
+                                })}
+                            />
+                            <button type="button" className={styles.plusButton}><PlusIcon /></button>
+                        </div>
+                        {errors.price && <span className={styles.errorText}>{errors.price.message}</span>}
                     </div>
                 </div>
                 <div className={styles.submitButtonWrapper}>

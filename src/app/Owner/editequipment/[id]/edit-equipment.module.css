@@ -252,9 +252,11 @@
 }
 
 .submitButtonWrapper {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 2rem;
 }
 
 .submitButton {
@@ -271,7 +273,23 @@
 }
 
 .submitButton:hover {
-    background-color: #fdd835;
+    background-color: #2a5b3e;
     transform: scale(1.05) translateY(-2px);
     box-shadow: 0 6px 20px rgba(255, 235, 59, 0.6);
+}
+
+.cancelButton {
+  background-color: #f3f4f6; /* A light gray */
+  color: #374151; /* Darker gray text */
+  border: 1px solid #d1d5db; /* Gray border */
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancelButton:hover {
+  background-color: #e5e7eb; /* Slightly darker gray on hover */
 }
