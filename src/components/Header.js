@@ -43,7 +43,7 @@ export default function Header() {
             {user ? (
               <div className="flex items-center space-x-4">
                 <span className="text-gray-800 font-medium">
-                  สวัสดี, {user.username}
+                  สวัสดีคุณ, {user.username}
                 </span>
                 <button 
                   onClick={handleLogout}

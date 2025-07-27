@@ -1,6 +1,10 @@
 'use client';
 
+import { useState } from 'react';
+import MainHeader from '../../../components/MainHeader';
 import styles from './add-equipment.module.css';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const CameraIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="60" height="60">
@@ -22,6 +26,84 @@ const HamburgerIcon = () => (
 );
 
 export default function AddEquipmentPage() {
+  const [equipmentName, setEquipmentName] = useState('');
+  const [category, setCategory] = useState('');
+  const [properties, setProperties] = useState('');
+  const [description, setDescription] = useState('');
+  const [address, setAddress] = useState('');
+  const [price, setPrice] = useState('');
+  const [image, setImage] = useState(null); // State to store the image file
+  const [imagePreview, setImagePreview] = useState(null); // State to store the image preview URL
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!equipmentName || !category || !properties || !description || !address || !price || !image) {
+      Swal.fire({
+        icon: 'error',
+        title: 'กรุณากรอกข้อมูล',
+        text: 'กรุณากรอกข้อมูลให้ครบถ้วนและเลือกรูปภาพ',
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('equipmentName', equipmentName);
+    formData.append('category', category);
+    formData.append('properties', properties);
+    formData.append('description', description);
+    formData.append('address', address);
+    formData.append('price', parseFloat(price));
+    formData.append('image', image); // Append the image file
+
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/equipment/add`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: 'เพิ่มอุปกรณ์สำเร็จ!',
+          text: response.data.message,
+        }).then(() => {
+          // Optionally clear form or redirect
+          setEquipmentName('');
+          setCategory('');
+          setProperties('');
+          setDescription('');
+          setAddress('');
+          setPrice('');
+          setImage(null); // Clear image state
+          setImagePreview(null); // Clear image preview
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'เพิ่มอุปกรณ์ไม่สำเร็จ!',
+          text: 'Unknown error',
+        });
+      }
+    } catch (error) {
+      console.error('Error adding equipment:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'เพิ่มอุปกรณ์ไม่สำเร็จ!',
+        text: 'An error occurred: ' + (error.response?.data?.message || error.message),
+      });
+    }
+  };
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -49,21 +131,32 @@ export default function AddEquipmentPage() {
         <h1 className={styles.title}>เพิ่มอุปกรณ์</h1>
         <div className={styles.formContainer}>
             <div className={styles.uploadSection}>
-                <div className={styles.uploadCircle}>
-                    <CameraIcon />
-                </div>
+                <label htmlFor="imageUpload" className={styles.uploadCircle} style={{ cursor: 'pointer' }}>
+                    {imagePreview ? (
+                        <img src={imagePreview} alt="Equipment Preview" className={styles.imagePreview} />
+                    ) : (
+                        <CameraIcon />
+                    )}
+                </label>
+                <input
+                    type="file"
+                    id="imageUpload"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: 'none' }}
+                />
                 <p>อัพโหลดภาพสินค้า</p>
             </div>
-            <form className={styles.form}>
-                <div className={styles.inputGroup}><label>ชื่อสินค้า :</label><input type="text" className={styles.input} /></div>
-                <div className={styles.inputGroup}><label>หมวดหมู่ :</label><select className={styles.select}><option>เลือกหมวดหมู่</option></select></div>
-                <div className={styles.inputGroup}><label>คุณสมบัติ :</label><input type="text" className={styles.input} /></div>
-                <div className={styles.inputGroup}><label>รายละเอียด :</label><textarea className={styles.textarea}></textarea></div>
-                <div className={styles.inputGroup}><label>ที่อยู่ของสินค้า :</label><textarea className={styles.textarea}></textarea></div>
+            <form className={styles.form} onSubmit={handleSubmit}>
+                <div className={styles.inputGroup}><label>ชื่อสินค้า :</label><input type="text" className={styles.input} value={equipmentName} onChange={(e) => setEquipmentName(e.target.value)} /></div>
+                <div className={styles.inputGroup}><label>หมวดหมู่ :</label><select className={styles.select} value={category} onChange={(e) => setCategory(e.target.value)}><option value="">เลือกหมวดหมู่</option><option value="Tractor">รถไถ</option><option value="Harvester">รถเกี่ยวข้าว</option></select></div>
+                <div className={styles.inputGroup}><label>คุณสมบัติ :</label><input type="text" className={styles.input} value={properties} onChange={(e) => setProperties(e.target.value)} /></div>
+                <div className={styles.inputGroup}><label>รายละเอียด :</label><textarea className={styles.textarea} value={description} onChange={(e) => setDescription(e.target.value)}></textarea></div>
+                <div className={styles.inputGroup}><label>ที่อยู่ของสินค้า :</label><textarea className={styles.textarea} value={address} onChange={(e) => setAddress(e.target.value)}></textarea></div>
                 <div className={styles.inputGroup}>
                     <label>ราคาที่ปล่อยเช่า :</label>
                     <div className={styles.priceInputWrapper}>
-                        <input type="text" className={styles.priceInput} />
+                        <input type="text" className={styles.priceInput} value={price} onChange={(e) => setPrice(e.target.value)} />
                         <button type="button" className={styles.plusButton}><PlusIcon /></button>
                     </div>
                 </div>
