@@ -52,6 +52,7 @@ export default function AddEquipmentPage() {
     formData.append('price', parseFloat(data.price));
     formData.append('image', image); // Append the image file
 
+
     try {
       const ownerAuth = JSON.parse(localStorage.getItem('ownerAuth'));
       const token = ownerAuth?.token;
@@ -65,6 +66,7 @@ export default function AddEquipmentPage() {
         return;
       }
 
+      
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/equipment/create`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -98,6 +100,7 @@ export default function AddEquipmentPage() {
       });
     }
   };
+
 
   return (
     <div className={styles.container}>
@@ -145,6 +148,19 @@ export default function AddEquipmentPage() {
                             <option value="">เลือกหมวดหมู่</option>
                             <option value="Tractor">รถไถ</option>
                             <option value="Harvester">รถเกี่ยวข้าว</option>
+                            <option value="Backhoe">รถแบคโฮ</option>
+                            <option value="Truck">รถบรรทุก</option>
+                            <option value="Crane">รถเครน</option>
+                            <option value="Forklift">รถโฟล์คลิฟ</option>
+                            <option value="BoomLift">รถกระเช้า</option>
+                            <option value="Bulldozer">รถแทรกเตอร์</option>
+                            <option value="RoadRoller">รถบดถนน</option>
+                            <option value="SlideOn">รถสไลด์ออน</option>
+                            <option value="Trailer">รถเทรลเลอร์</option>
+                            <option value="Grader">รถเกรดเดอร์</option>
+                            <option value="CrawlerCrane">คราวเลอร์เครน</option>
+                            <option value="TowerCrane">ทาวเวอร์เครน</option>
+                            <option value="Generator">เครื่องปั่นไฟ</option>
                         </select>
                         {errors.category && <span className={styles.errorText}>{errors.category.message}</span>}
                     </div>

@@ -1,34 +1,37 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import styles from './equipment.module.css';
 
 const Header = () => (
-    <header>
-        <div className={styles.header}>
-            <div className={styles.logoContainer}>
-                <Link href="/" className={styles.logo}>
-                    <div>SMART/AGRIRENT</div>
-                    <div className={styles.logoSmallText}>AGRICULTURAL EQUIPMENT RENTAL PLATFORM</div>
-                </Link>
-            </div>
-            <nav className={styles.navLinks}>
-                <Link href="/" className={styles.navLink}>หน้าแรก</Link>
-                <Link href="/Farmer/equipment" className={styles.navLink}>ค้นหาเครื่องจักร</Link>
-                <Link href="/" className={styles.navLink}>นโยบายส่วนตัว</Link>
-            </nav>
-            <div className={styles.userSection}>
-                <div className={styles.userProfile}>
-                    <span>NUT.05</span>
-                </div>
-                <div className={styles.menuIcon}>☰</div>
-            </div>
+  <header>
+    <div className={styles.header}>
+      <div className={styles.logoContainer}>
+        <Link href="/" className={styles.logo}>
+          <div>SMART/AGRIRENT</div>
+          <div className={styles.logoSmallText}>AGRICULTURAL EQUIPMENT RENTAL PLATFORM</div>
+        </Link>
+      </div>
+      <nav className={styles.navLinks}>
+        <Link href="/" className={styles.navLink}>หน้าแรก</Link>
+        <Link href="/Farmer/equipment" className={styles.navLink}>ค้นหาเครื่องจักร</Link>
+        <Link href="/" className={styles.navLink}>นโยบายส่วนตัว</Link>
+      </nav>
+      <div className={styles.userSection}>
+        <div className={styles.userProfile}>
+          <span>NUT.05</span>
         </div>
-        <div className={styles.searchBarContainer}>
-            <div className={styles.searchBar}>
-                <input type="text" placeholder="คุณกำลังมองหาอะไร?" className={styles.searchInput} />
-                <button className={styles.searchButton}>ค้นหา</button>
-            </div>
-        </div>
-    </header>
+        <div className={styles.menuIcon}>☰</div>
+      </div>
+    </div>
+    <div className={styles.searchBarContainer}>
+      <div className={styles.searchBar}>
+        <input type="text" placeholder="คุณกำลังมองหาอะไร?" className={styles.searchInput} />
+        <button className={styles.searchButton}>ค้นหา</button>
+      </div>
+    </div>
+  </header>
 );
 
 export default function EquipmentPage() {
@@ -55,21 +58,21 @@ export default function EquipmentPage() {
           </ul>
         </aside>
         <div className={styles.bookingContainer}>
-            <div className={styles.bookingSection}>
-                <div className={styles.datePicker}>
-                    <label>เลือกวันที่</label>
-                    <input type="text" placeholder="dd/mm/yy" />
-                </div>
-                <div className={styles.datePicker}>
-                    <label>ส่งคืน</label>
-                    <input type="text" placeholder="dd/mm/yy" />
-                </div>
+          <div className={styles.bookingSection}>
+            <div className={styles.datePicker}>
+              <label>เลือกวันที่</label>
+              <input type="date" />
             </div>
-            <div className={styles.addressInputWrapper}>
-                <label>ที่อยู่จัดส่ง</label>
-                <input type="text" className={styles.addressInput} placeholder="" />
+            <div className={styles.datePicker}>
+              <label>ส่งคืน</label>
+              <input type="date" />
             </div>
-            <button className={styles.bookButton}>สั่งจอง</button>
+          </div>
+          <div className={styles.addressInputWrapper}>
+            <label>ที่อยู่จัดส่ง</label>
+            <input type="text" className={styles.addressInput} placeholder="" />
+          </div>
+          <button className={styles.bookButton}>สั่งจอง</button>
         </div>
       </main>
     </div>

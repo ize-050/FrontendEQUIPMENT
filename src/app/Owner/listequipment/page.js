@@ -36,7 +36,7 @@ const ListEquipmentPage = () => {
         },
       });
 
-      setEquipment(response.data);
+      setEquipment([...response.data]);
     } catch (err) {
       setError('ไม่สามารถดึงข้อมูลอุปกรณ์ได้');
       console.error('Error fetching equipment:', err);
@@ -121,6 +121,10 @@ const ListEquipmentPage = () => {
                   />
                   <div className={styles.equipmentInfo}>
                     <h2 className={styles.equipmentName}>{item.equipmentName}</h2>
+                    <p className={styles.equipmentCategory}>หมวดหมู่ : {item.equipmentList}</p>
+                    <p className={styles.equipmentDescription}>คุณสมบัติ : {item.equipmentFeature}</p>
+                    <p className={styles.equipmentDescription}>รายละเอียด : {item.equipmentDetails}</p>
+                    <p className={styles.equipmentAddress}>ที่อยู่ : {item.equipmentAddress}</p>
                     <p className={styles.equipmentPrice}>฿{item.price.toLocaleString()} / วัน</p>
                     <p className={`${styles.equipmentStatus} ${styles[item.equipmentStatus.toLowerCase()]}`}>
                       สถานะ: {item.equipmentStatus}

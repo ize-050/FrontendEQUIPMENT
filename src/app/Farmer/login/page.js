@@ -153,7 +153,6 @@ export default function LoginPage() {
           <button className={`${styles.actionButton} ${styles.owner}`}>เจ้าของเครื่องมือ v</button>
         </div>
       </header>
-
       <div className={styles.loginBanner}>
         <h1>ผู้เช่า : Login/เข้าสู่ระบบ</h1>
       </div>

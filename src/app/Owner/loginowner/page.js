@@ -107,7 +107,7 @@ export default function LoginOwnerPage() {
 
         Swal.fire({
           icon: 'success',
-          title: 'เข้าสู่ระบบสำเร็จ!',
+          title: 'ล็อคอินสำเร็จ',
           text: loginResponse.message,
         }).then(() => {
           // Redirect to home page after successful login
