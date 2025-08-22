@@ -15,7 +15,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.61.1",
-    "sweetalert2": "^11.22.2"
+    "sweetalert2": "^11.22.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
