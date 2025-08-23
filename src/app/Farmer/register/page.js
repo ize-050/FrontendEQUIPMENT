@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef } from 'react';
@@ -35,7 +34,7 @@ const Step1Form = ({ onNext, formData, handleInputChange, handleFileChange, imag
         <form className={styles.registerForm}>
           <div className="inputGroup">
             <label htmlFor="farmerUsername">ชื่อบัญชีผู้ใช้งาน</label>
-            <input type="text" id="farmerUsername" name="farmerUsername" className={styles.input} value={formData.farmerUsername} onChange={handleInputChange} />
+            <input type="text" id="farmerUserName" name="farmerUserName" className={styles.input} value={formData.farmerUsername} onChange={handleInputChange} />
           </div>
           <div className="inputGroup">
             <label htmlFor="farmerPassword">รหัสผ่าน</label>
@@ -83,7 +82,7 @@ const Step2Form = ({ onBack, handleSubmit, formData, handleInputChange }) => (
             </div>
             <div className={styles.formRow}>
                 <div className={styles.inputGroup}><label>ตำบล/แขวง</label><input type="text" name="farmerSubDistrict" className={styles.input} value={formData.farmerSubDistrict} onChange={handleInputChange} /></div>
-                <div className={styles.inputGroup}><label>อำเภอ/เขต</label><input type="text" name="farmersDistrict" className={styles.input} value={formData.farmersDistrict} onChange={handleInputChange} /></div>
+                <div className={styles.inputGroup}><label>อำเภอ/เขต</label><input type="text" name="farmerDistrict" className={styles.input} value={formData.farmerDistrict} onChange={handleInputChange} /></div>
             </div>
             <div className={styles.formRow}>
                 <div className={styles.inputGroup}><label>จังหวัด</label><input type="text" name="farmerProvince" className={styles.input} value={formData.farmerProvince} onChange={handleInputChange} /></div>
@@ -102,7 +101,7 @@ export default function RegisterPage() {
   const [step, setStep] = useState(1);
   const [isTenantDropdownOpen, setIsTenantDropdownOpen] = useState(false);
   const [formData, setFormData] = useState({
-    farmerUsername: '',
+    farmerUserName: '',
     farmerPassword: '',
     farmerCFPassword: '',
     farmerEmail: '',
@@ -115,7 +114,7 @@ export default function RegisterPage() {
     farmerAlley: '',
     farmerMoo: '',
     farmerSubDistrict: '',
-    farmersDistrict: '',
+    farmerDistrict: '',
     farmerProvince: '',
     farmerPostalCode: ''
   });
@@ -141,8 +140,8 @@ export default function RegisterPage() {
   };
 
   const handleNext = () => {
-    const { farmerUsername, farmerEmail, farmerPassword, farmerCFPassword } = formData;
-    if (!farmerUsername || !farmerEmail || !farmerPassword || !farmerCFPassword) {
+    const { farmerUserName, farmerEmail, farmerPassword, farmerCFPassword } = formData;
+    if (!farmerUserName || !farmerEmail || !farmerPassword || !farmerCFPassword) {
         Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกข้อมูลในขั้นตอนที่ 1 ให้ครบถ้วน', 'warning');
         return;
     }
@@ -163,8 +162,12 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const requiredFields = ['farmerFName', 'farmerLName', 'farmerGender', 'farmerTel', 'farmerDOB', 'farmerHouseNumber', 'farmerSubDistrict', 'farmersDistrict', 'farmerProvince', 'farmerPostalCode'];
+
+    // ใช้ key ให้ตรงกับ formData
+    const requiredFields = [
+        'farmerFName', 'farmerLName', 'farmerGender', 'farmerTel', 'farmerDOB',
+        'farmerHouseNumber', 'farmerSubDistrict', 'farmerDistrict', 'farmerProvince', 'farmerPostalCode'
+    ];
     const isStep2Complete = requiredFields.every(field => formData[field]);
 
     if (!isStep2Complete) {
@@ -176,12 +179,13 @@ export default function RegisterPage() {
         return;
     }
 
-    const data = new FormData();
+    // log ข้อมูลก่อนส่ง
+    console.log('formData:', formData);
+    console.log('file:', file);
 
-    // Append the entire formData object as a JSON string with key 'farmer'
+    const data = new FormData();
     data.append('farmer', JSON.stringify(formData));
-    // Append the image file with the field name 'File'
-    data.append('File', file);
+    data.append('file', file);
 
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/farmer/register`, data);
