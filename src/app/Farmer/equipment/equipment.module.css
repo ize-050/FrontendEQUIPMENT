@@ -420,6 +420,310 @@
   transform: translateY(-1px);
 }
 
+/* Equipment Styles */
+.equipmentList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.equipmentCard {
+  display: flex;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  position: relative;
+  min-height: 320px;
+  align-items: stretch;
+}
+
+.cardImageSection {
+  position: relative;
+  width: 320px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: #f7faf7;
+  border-right: 2px solid #e8f5e8;
+  padding: 1rem;
+}
+
+.statusTag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: #aeea00;
+  color: #2e7d32;
+  font-weight: 700;
+  font-size: 1.3rem;
+  padding: 0.3rem 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(76,175,80,0.12);
+  z-index: 2;
+}
+
+.equipmentImg {
+  width: 95%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-top: 2.5rem;
+  box-shadow: 0 4px 16px rgba(76,175,80,0.10);
+}
+
+.cardInfoSection {
+  flex: 1;
+  padding: 2rem 2.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.equipmentName {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+.priceBox {
+  background: #222;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 120px;
+}
+
+.priceValue {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-top: 0.2rem;
+}
+
+.equipmentDetails {
+  margin: 1rem 0;
+  padding-left: 1.2rem;
+  color: #444;
+  font-size: 1.1rem;
+}
+
+.equipmentDetails li {
+  margin-bottom: 0.4rem;
+}
+
+.priceList {
+  display: flex;
+  gap: 1.2rem;
+  margin: 1rem 0;
+}
+
+.priceItem {
+  background: #f1f8e9;
+  color: #2e7d32;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1.1rem;
+  border: 1px solid #c5e1a5;
+}
+
+.reviewSection {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+  color: #222;
+  font-weight: 500;
+}
+
+.serviceTag {
+  background: #e0f2f1;
+  color: #00897b;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.checkIcon {
+  position: absolute;
+  bottom: 24px;
+  right: 32px;
+  font-size: 2.2rem;
+  color: #388e3c;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(76,175,80,0.10);
+  padding: 0.2rem 0.6rem;
+}
+
+/* Content Section */
+.contentSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.equipmentSection {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.categoryItem {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.categoryItem.active {
+  background: #4caf50;
+  color: white;
+  box-shadow: 0 4px 12px rgba(76,175,80,0.2);
+}
+
+.loader,
+.error,
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+}
+
+.emptyState h3 {
+  color: #2e7d32;
+  margin-bottom: 1rem;
+}
+
+.mainInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.priceWrapper {
+  text-align: right;
+}
+
+.priceLabel {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.3rem;
+}
+
+.priceValue {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+.details {
+  background: #f5f5f5;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+}
+
+.details h4 {
+  color: #2e7d32;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+.details h4:first-child {
+  margin-top: 0;
+}
+
+.details p {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.bottomSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.rentButton {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rentButton:hover {
+  background: #388e3c;
+  transform: translateY(-2px);
+}
+
+.bookingForm {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.bookingTitle {
+  color: #2e7d32;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.bookingGrid {
+  display: grid;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.dateSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.submitButton {
+  width: 100%;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submitButton:hover {
+  background: #1b5e20;
+  transform: translateY(-2px);
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .main {
@@ -473,6 +777,19 @@
     padding: 0.6rem 1rem;
     font-size: 0.9rem;
   }
+  
+  .dateSection {
+    grid-template-columns: 1fr;
+  }
+  
+  .mainInfo {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .priceWrapper {
+    text-align: left;
+  }
 }
 
 @media (max-width: 480px) {
@@ -496,5 +813,28 @@
   
   .searchButton {
     width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .equipmentCard {
+    flex-direction: column;
+    min-height: unset;
+  }
+  .cardImageSection {
+    width: 100%;
+    min-width: unset;
+    border-right: none;
+    border-bottom: 2px solid #e8f5e8;
+    padding: 1rem 1rem 0.5rem 1rem;
+  }
+  .cardInfoSection {
+    padding: 1.5rem 1rem 1.5rem 1rem;
+  }
+  .checkIcon {
+    position: static;
+    margin-top: 1rem;
+    margin-left: auto;
+    display: block;
   }
 }
