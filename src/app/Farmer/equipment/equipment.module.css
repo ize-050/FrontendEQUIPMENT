@@ -7,8 +7,17 @@
 
 .container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 50%, #e0f2e0 100%);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f5f5;
+}
+
+.mainContent {
+  padding-top: 80px; /* ปรับตามความสูงของ MainHeader */
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 /* Header Styles */
