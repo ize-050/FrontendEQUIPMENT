@@ -138,10 +138,28 @@ export default function MainHeader() {
                   // Farmer menu options
                   <>
                     <Link
+                      href="/Farmer/equipment"
+                      className={styles.dropdownItem}
+                    >
+                      ค้นหาอุปกรณ์
+                    </Link>
+                    <Link
                       href="/Farmer/viewmybooking"
                       className={styles.dropdownItem}
                     >
                       รายการจองฉัน
+                    </Link>
+                    <Link
+                      href="/Farmer/delivery-status"
+                      className={styles.dropdownItem}
+                    >
+                      สถานะการเช่า
+                    </Link>
+                    <Link
+                      href="/Farmer/acceptance"
+                      className={styles.dropdownItem}
+                    >
+                      ข้อตกลงการใช้งาน
                     </Link>
                     <button
                       onClick={handleLogout}

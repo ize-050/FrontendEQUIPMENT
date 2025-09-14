@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import MainHeader from '../../../components/MainHeader';
@@ -10,7 +10,7 @@ import axios from 'axios';
 
 const CameraIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="60" height="60">
-    <path d="M20 4h-3.17L15 2H9L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5 5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+    <path d="M20 4h-3.17L15 2H9L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
     <path d="M12 15c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3z"/>
   </svg>
 );
@@ -29,13 +29,8 @@ const HamburgerIcon = () => (
 
 export default function AddEquipmentPage() {
   const router = useRouter();
-  const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  
-  // เพิ่ม state สำหรับ equipment types
-  const [eqType, setEqType] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [image, setImage] = useState(null); // State to store the image file
+  const [imagePreview, setImagePreview] = useState(null); // State to store the image preview URL
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
@@ -50,12 +45,12 @@ export default function AddEquipmentPage() {
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append('equipmentName', data.equipmentName);
-    formData.append('equipmentTypeId', data.equipmentTypeId); // ส่ง ID แทน category
+    formData.append('category', data.category);
     formData.append('properties', data.properties);
     formData.append('description', data.description);
     formData.append('address', data.address);
     formData.append('price', parseFloat(data.price));
-    formData.append('image', image);
+    formData.append('image', image); // Append the image file
 
     try {
       const ownerAuth = JSON.parse(localStorage.getItem('ownerAuth'));
@@ -77,7 +72,7 @@ export default function AddEquipmentPage() {
         },
       });
 
-      if (response.status === 201) {
+      if (response.status === 201) { // Check for 201 Created status
         Swal.fire({
           icon: 'success',
           title: 'เพิ่มอุปกรณ์สำเร็จ!',
@@ -103,41 +98,6 @@ export default function AddEquipmentPage() {
       });
     }
   };
-
-  const fetchEquipmentTypes = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/equipment-type/all');
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      console.log('Fetched equipment types:', data);
-      return data;
-    } catch (error) {
-      console.error('Error fetching equipment types:', error);
-      throw error;
-    }
-  };
-
-  useEffect(() => {
-    const loadEquipmentTypes = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await fetchEquipmentTypes();
-        setEqType(data); // ใช้ setEqType แทน setEquipmentTypes
-      } catch (err) {
-        setError('ไม่สามารถโหลดข้อมูลหมวดหมู่ได้');
-        console.error('Error fetching equipment types:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadEquipmentTypes();
-  }, []);
 
   return (
     <div className={styles.container}>
@@ -179,24 +139,14 @@ export default function AddEquipmentPage() {
                     <label>หมวดหมู่ :</label>
                     <div className={styles.inputWrapper}>
                         <select 
-                            className={`${styles.select} ${errors.equipmentTypeId ? styles.inputError : ''}`}
-                            {...register('equipmentTypeId', { required: 'กรุณาเลือกหมวดหมู่' })}
-                            disabled={loading}
+                            className={`${styles.select} ${errors.category ? styles.inputError : ''}`}
+                            {...register('category', { required: 'กรุณาเลือกหมวดหมู่' })}
                         >
-                            <option value="">
-                                {loading ? 'กำลังโหลด...' : 'เลือกหมวดหมู่'}
-                            </option>
-                            {eqType.map((type) => (
-                                <option 
-                                    key={type.equipmentTypeId} 
-                                    value={type.equipmentTypeId}
-                                >
-                                    {type.equipmentTypeName}
-                                </option>
-                            ))}
+                            <option value="">เลือกหมวดหมู่</option>
+                            <option value="Tractor">รถไถ</option>
+                            <option value="Harvester">รถเกี่ยวข้าว</option>
                         </select>
-                        {error && <span className={styles.errorText}>{error}</span>}
-                        {errors.equipmentTypeId && <span className={styles.errorText}>{errors.equipmentTypeId.message}</span>}
+                        {errors.category && <span className={styles.errorText}>{errors.category.message}</span>}
                     </div>
                 </div>
                 
@@ -252,9 +202,7 @@ export default function AddEquipmentPage() {
                     </div>
                 </div>
                 <div className={styles.submitButtonWrapper}>
-                    <button type="submit" className={styles.submitButton} disabled={loading}>
-                        {loading ? 'กำลังโหลด...' : 'บันทึกและเผยแพร่'}
-                    </button>
+                    <button type="submit" className={styles.submitButton}>บันทึกและเผยแพร่</button>
                 </div>
             </form>
         </div>

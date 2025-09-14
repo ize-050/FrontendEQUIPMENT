@@ -36,7 +36,7 @@ const ListEquipmentPage = () => {
         },
       });
 
-      setEquipment([...response.data]);
+      setEquipment(response.data);
     } catch (err) {
       setError('ไม่สามารถดึงข้อมูลอุปกรณ์ได้');
       console.error('Error fetching equipment:', err);
@@ -110,44 +110,59 @@ const ListEquipmentPage = () => {
         {error && <p className={styles.errorText}>{error}</p>}
         
         {!loading && !error && (
-          <div className={styles.equipmentGrid}>
+          <div className={styles.tableContainer}>
             {equipment.length > 0 ? (
-              equipment.map((item) => (
-                <div key={item.equipmentId} className={styles.equipmentCard}>
-                  <img 
-                    src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/images/${item.equipmentImg}`}
-                    alt={item.equipmentName} 
-                    className={styles.equipmentImage}
-                  />
-                  <div className={styles.equipmentInfo}>
-                    <h2 className={styles.equipmentName}>{item.equipmentName}</h2>
-                    <p className={styles.equipmentCategory}>หมวดหมู่ : {item.equipmentList}</p>
-                    <p className={styles.equipmentDescription}>คุณสมบัติ : {item.equipmentFeature}</p>
-                    <p className={styles.equipmentDescription}>รายละเอียด : {item.equipmentDetails}</p>
-                    <p className={styles.equipmentAddress}>ที่อยู่ : {item.equipmentAddress}</p>
-                    <p className={styles.equipmentPrice}>฿{item.price.toLocaleString()} / วัน</p>
-                    <p className={`${styles.equipmentStatus} ${styles[item.equipmentStatus.toLowerCase()]}`}>
-                      สถานะ: {item.equipmentStatus}
-                    </p>
-                  </div>
-                  <div className={styles.cardActions}>
-                    <button 
-                      className={styles.editButton}
-                      onClick={() => handleEdit(item.equipmentId)}
-                    >
-                      แก้ไข
-                    </button>
-                    <button 
-                      className={styles.deleteButton}
-                      onClick={() => handleDelete(item.equipmentId)}
-                    >
-                      ลบ
-                    </button>
-                  </div>
-                </div>
-              ))
+              <table className={styles.equipmentTable}>
+                <thead>
+                  <tr>
+                    <th>รูปภาพ</th>
+                    <th>ชื่ออุปกรณ์</th>
+                    <th>ราคา/วัน</th>
+                    <th>สถานะ</th>
+                    <th>การจัดการ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {equipment.map((item) => (
+                    <tr key={item.equipmentId} className={styles.equipmentRow}>
+                      <td>
+                        <img 
+                          src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/images/${item.equipmentImg}`}
+                          alt={item.equipmentName} 
+                          className={styles.equipmentImage}
+                        />
+                      </td>
+                      <td className={styles.equipmentName}>{item.equipmentName}</td>
+                      <td className={styles.equipmentPrice}>฿{item.price.toLocaleString()}</td>
+                      <td>
+                        <span className={`${styles.statusBadge} ${styles[item.equipmentStatus.toLowerCase()]}`}>
+                          {item.equipmentStatus}
+                        </span>
+                      </td>
+                      <td>
+                        <div className={styles.actionButtons}>
+                          <button 
+                            className={styles.editButton}
+                            onClick={() => handleEdit(item.equipmentId)}
+                          >
+                            แก้ไข
+                          </button>
+                          <button 
+                            className={styles.deleteButton}
+                            onClick={() => handleDelete(item.equipmentId)}
+                          >
+                            ลบ
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             ) : (
-              <p>ยังไม่มีอุปกรณ์ในรายการ</p>
+              <div className={styles.emptyState}>
+                <p>ยังไม่มีอุปกรณ์ในรายการ</p>
+              </div>
             )}
           </div>
         )}

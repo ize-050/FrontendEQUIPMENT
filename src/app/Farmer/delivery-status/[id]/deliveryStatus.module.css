@@ -1,0 +1,469 @@
+.pageContainer {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding-top: 80px;
+}
+
+.mainContent {
+  margin-top: 5rem;
+  padding: 2rem 4rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #f8f9fa;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.backButton {
+  background: linear-gradient(135deg, #6c757d, #495057);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.backButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.loadingContainer {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #495057;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.errorContainer {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.errorText {
+  color: #dc3545;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* Status Card */
+.statusCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.statusHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.statusIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
+}
+
+.statusInfo {
+  flex: 1;
+}
+
+.statusTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+}
+
+.statusDescription {
+  color: #6c757d;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Progress Bar */
+.progressContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.progressBar {
+  flex: 1;
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  transition: width 0.5s ease;
+  border-radius: 4px;
+}
+
+.progressText {
+  font-weight: 600;
+  color: #495057;
+  min-width: 40px;
+}
+
+/* Timeline Card */
+.timelineCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.timelineTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 2rem 0;
+  text-align: center;
+}
+
+/* Two-Row Timeline */
+.timelineRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.verticalConnector {
+  width: 3px;
+  height: 30px;
+  background-color: #dc3545;
+  margin: 0 auto 1rem auto;
+  position: relative;
+}
+
+.timelineStepContainer {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.timelineStepContainer:last-child {
+  flex: 0;
+}
+
+.horizontalStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.stepIcon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  border: 3px solid #e9ecef;
+}
+
+.horizontalStep.completed .stepIcon {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+.horizontalStep.active .stepIcon {
+  color: white;
+  border-width: 3px;
+  box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.2);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+  }
+}
+
+.stepLabel {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #495057;
+  max-width: 120px;
+  line-height: 1.3;
+}
+
+.horizontalStep.completed .stepLabel {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.horizontalStep.active .stepLabel {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.horizontalConnector {
+  flex: 1;
+  height: 3px;
+  background-color: #dc3545;
+  margin: 0 1rem;
+  position: relative;
+  top: -25px;
+}
+
+/* Secondary Timeline */
+.secondaryTimeline {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.secondaryStepContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.secondaryStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.secondaryStep .stepIcon {
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.secondaryStep .stepLabel {
+  font-size: 0.8rem;
+  max-width: 100px;
+}
+
+/* Details Card */
+.detailsCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.detailsTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 1.5rem 0;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detailItem label {
+  font-weight: 600;
+  color: #6c757d;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detailItem span {
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.totalPrice {
+  font-weight: 700;
+  color: #28a745 !important;
+  font-size: 1.3rem !important;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .mainContent {
+    padding: 2rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 1rem;
+  }
+  
+  .title {
+    font-size: 1.8rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .statusHeader {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .statusIcon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+  
+  .detailsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .progressContainer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .statusCard,
+  .timelineCard,
+  .detailsCard {
+    padding: 1.5rem;
+  }
+  
+  /* Mobile Timeline Adjustments */
+  .horizontalTimeline {
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .timelineStepContainer {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .horizontalConnector {
+    width: 3px;
+    height: 30px;
+    margin: 0.5rem 0;
+    top: 0;
+  }
+  
+  .secondaryTimeline {
+    display: none;
+  }
+  
+  .stepLabel {
+    max-width: none;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .backButton {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .timelineStep {
+    gap: 0.75rem;
+  }
+  
+  .stepIndicator {
+    width: 35px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+  
+  .stepConnector {
+    left: 16.5px;
+    top: 35px;
+  }
+}
