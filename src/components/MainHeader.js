@@ -110,19 +110,19 @@ export default function MainHeader() {
                       รายการอุปกรณ์ของฉัน
                     </Link>
                     <Link
-                      href="/owner/bookings"
+                      href="/Owner/bookings"
                       className={styles.dropdownItem}
                     >
                       รายการจอง
                     </Link>
                     <Link
-                      href="/owner/delivery-update"
+                      href="/Owner/delivery-update"
                       className={styles.dropdownItem}
                     >
                       update การจัดส่งรับสินค้า
                     </Link>
                     <Link
-                      href="/owner/delivery-list"
+                      href="/Owner/delivery-list"
                       className={styles.dropdownItem}
                     >
                       รายการจัดส่งรับสินค้า

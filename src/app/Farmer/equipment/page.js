@@ -1,62 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./equipment.module.css";
 import MainHeader from "@/components/MainHeader";
-
-// Header รับ props searchTerm, setSearchTerm
-const Header = ({ searchTerm, setSearchTerm }) => (
-  <header>
-    <div className={styles.header}>
-      <div className={styles.logoContainer}>
-        <Link href="/" className={styles.logo}>
-          <div>SMART/AGRIRENT</div>
-          <div className={styles.logoSmallText}>
-            AGRICULTURAL EQUIPMENT RENTAL PLATFORM
-          </div>
-        </Link>
-      </div>
-      <nav className={styles.navLinks}>
-        <Link href="/" className={styles.navLink}>
-          หน้าแรก
-        </Link>
-        <Link href="/Farmer/equipment" className={styles.navLink}>
-          ค้นหาเครื่องจักร
-        </Link>
-        <Link href="/" className={styles.navLink}>
-          นโยบายส่วนตัว
-        </Link>
-      </nav>
-      <div className={styles.userSection}>
-        <div className={styles.userProfile}>
-          <span>NUT.05</span>
-        </div>
-        <div className={styles.menuIcon}>☰</div>
-      </div>
-    </div>
-    <div className={styles.searchBarContainer}>
-      <div className={styles.searchBar}>
-        <input
-          type="text"
-          placeholder="คุณกำลังมองหาอะไร?"
-          className={styles.searchInput}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button
-          className={styles.searchButton}
-          type="button"
-          tabIndex={-1}
-          style={{ pointerEvents: "none", opacity: 0.7 }}
-        >
-          ค้นหา
-        </button>
-      </div>
-    </div>
-  </header>
-);
 
 export default function EquipmentPage() {
   const [eqType, setEqType] = useState([]);
@@ -69,47 +16,73 @@ export default function EquipmentPage() {
   const [bookingEndDate, setBookingEndDate] = useState("");
   const [changeAddress, setChangeAddress] = useState("");
   const [submitStatus, setSubmitStatus] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); // เพิ่ม state สำหรับค้นหา
+  const [searchTerm, setSearchTerm] = useState("");
+  const [lockedEqIds, setLockedEqIds] = useState([]); // eqId ที่ถูกล็อกจากสถานะจอง (ไม่ใช่ CONFIRMED)
+
   const router = useRouter();
 
   const fetchEquipmentTypes = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/equipment-type/all");
+    const res = await fetch("http://localhost:8080/equipment-type/all");
+    if (!res.ok) throw new Error("load types failed");
+    return res.json();
+  };
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Fetched equipment types:", data);
-      return data;
-    } catch (error) {
-      console.error("Error fetching equipment types:", error);
-      throw error;
+  const fetchLockedEquipment = async (equipmentList) => {
+    const ids = equipmentList.map((e) => e.equipmentId);
+    if (!ids.length) {
+      setLockedEqIds([]);
+      return;
     }
+
+    let token = null;
+    try {
+      const farmerToken = JSON.parse(
+        localStorage.getItem("farmerAuth") || "null"
+      );
+      token = farmerToken?.token || null;
+    } catch {}
+
+    const params = new URLSearchParams();
+    ids.forEach((id) => params.append("equipmentIds", String(id)));
+
+    const res = await fetch(
+      `http://localhost:8080/booking/equipment-locked?${params.toString()}`,
+      { headers: token ? { Authorization: `Bearer ${token}` } : {} }
+    );
+    if (!res.ok) {
+      setLockedEqIds([]);
+      return;
+    }
+    const data = await res.json();
+    setLockedEqIds(data.lockedEquipmentIds || []);
   };
 
   const fetchEquipmentByType = async (typeId) => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch(
+      const res = await fetch(
         `http://localhost:8080/equipment/all-by-type/${typeId}`
       );
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
-      const data = await response.json();
-      console.log(`Equipment for type ${typeId}:`, data);
+      if (!res.ok) throw new Error("load equipment failed");
+      const data = await res.json();
       setEquipment(data);
+      await fetchLockedEquipment(data);
     } catch (err) {
       setError("ไม่สามารถโหลดข้อมูลอุปกรณ์ได้");
-      console.error("Error fetching equipment:", err);
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  // ฟังก์ชันสำหรับ checkbox
+  // ถอดรายการที่ถูกล็อกออกจาก selection อัตโนมัติ
+  useEffect(() => {
+    setSelectedEquipments((prev) =>
+      prev.filter((id) => !lockedEqIds.includes(id))
+    );
+  }, [lockedEqIds]);
+
   const handleCheckboxChange = (equipmentId) => {
     setSelectedEquipments((prev) =>
       prev.includes(equipmentId)
@@ -122,7 +95,6 @@ export default function EquipmentPage() {
     e.preventDefault();
     setSubmitStatus(null);
 
-    // ตรวจสอบข้อมูล
     if (
       !bookingStartDate ||
       !bookingEndDate ||
@@ -133,16 +105,30 @@ export default function EquipmentPage() {
       return;
     }
 
+    const conflicted = selectedEquipments.filter((id) =>
+      lockedEqIds.includes(id)
+    );
+    if (conflicted.length) {
+      setSubmitStatus("มีบางรายการไม่ว่าง");
+      return;
+    }
+
     try {
-      const farmerToken = JSON.parse(localStorage.getItem("farmerAuth"));
-      const token = farmerToken?.token;
+      let token = null;
+      try {
+        const farmerToken = JSON.parse(
+          localStorage.getItem("farmerAuth") || "null"
+        );
+        token = farmerToken?.token || null;
+      } catch {}
+
       const res = await fetch(
         "http://localhost:8080/booking/create-with-equipment",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
           body: JSON.stringify({
             bookingStartDate,
@@ -154,57 +140,48 @@ export default function EquipmentPage() {
         }
       );
 
-      if (!res.ok) throw new Error("เกิดข้อผิดพลาดในการจอง");
+      if (!res.ok) throw new Error("booking failed");
 
       setSubmitStatus("จองสำเร็จ!");
-      // reset form
       setBookingStartDate("");
       setBookingEndDate("");
       setChangeAddress("");
       setSelectedEquipments([]);
-
-      // ไปหน้า acceptance ทันที (ไม่ต้อง setTimeout)
       router.push("/Farmer/acceptance");
     } catch (err) {
       setSubmitStatus("เกิดข้อผิดพลาดในการจอง");
     }
   };
 
-  // ฟังก์ชันกรองอุปกรณ์ตาม searchTerm
   const filteredEquipment = equipment.filter((eq) =>
-    eq.equipmentName?.toLowerCase().includes(searchTerm.toLowerCase())
+    (eq.equipmentName || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
-    if (selectedTypeId !== null) {
-      fetchEquipmentByType(selectedTypeId);
-    }
+    if (selectedTypeId !== null) fetchEquipmentByType(selectedTypeId);
   }, [selectedTypeId]);
 
   useEffect(() => {
-    const loadEquipmentTypes = async () => {
+    const init = async () => {
       try {
         setLoading(true);
         setError(null);
-        const data = await fetchEquipmentTypes();
-        setEqType(data); // ใช้ setEqType แทน setEquipmentTypes
+        const types = await fetchEquipmentTypes();
+        setEqType(types);
       } catch (err) {
         setError("ไม่สามารถโหลดข้อมูลหมวดหมู่ได้");
-        console.error("Error fetching equipment types:", err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-
-    loadEquipmentTypes();
+    init();
   }, []);
 
   return (
     <div className={styles.container}>
       <MainHeader />
       <main className={styles.mainContent}>
-        {" "}
-        {/* เปลี่ยนชื่อ class */}
         <aside className={styles.sidebar}>
           <h2 className={styles.categoryTitle}>หมวดหมู่เครื่องจักร</h2>
           <ul className={styles.categoryList}>
@@ -221,6 +198,7 @@ export default function EquipmentPage() {
             ))}
           </ul>
         </aside>
+
         <div className={styles.contentSection}>
           <div className={styles.searchBarContainer}>
             <div className={styles.searchBar}>
@@ -233,6 +211,7 @@ export default function EquipmentPage() {
               />
             </div>
           </div>
+
           <div className={styles.equipmentSection}>
             {loading && <div className={styles.loader}>กำลังโหลด...</div>}
             {error && <div className={styles.error}>{error}</div>}
@@ -241,73 +220,85 @@ export default function EquipmentPage() {
                 <h3>ไม่พบเครื่องจักรที่ตรงกับ "{searchTerm}"</h3>
               </div>
             )}
+
             <ul className={styles.equipmentList}>
-              {filteredEquipment.map((eq) => (
-                <li key={eq.equipmentId} className={styles.equipmentCard}>
-                  <div className={styles.cardImageSection}>
-                    <div
-                      className={`${styles.statusTag} ${
-                        eq.equipmentStatus === "Available"
-                          ? styles.available
-                          : styles.unavailable
-                      }`}
-                    >
-                      {eq.equipmentStatus === "Available"
-                        ? "พร้อมใช้งาน"
-                        : "ไม่ว่าง"}
-                    </div>
-                    <img
-                      src={`http://localhost:8080/uploads/images/${eq.equipmentImg}`}
-                      alt={eq.equipmentName}
-                      className={styles.equipmentImg}
-                    />
-                  </div>
+              {filteredEquipment.map((eq) => {
+                // ไม่ว่าง ถ้า: ไม่ใช่ Available หรือ ถูกล็อกจากการจองที่ยังไม่ CONFIRMED
+                const isUnavailable =
+                  eq.equipmentStatus !== "Available" ||
+                  lockedEqIds.includes(eq.equipmentId);
+                const isAvailable = !isUnavailable;
 
-                  <div className={styles.cardInfoSection}>
-                    <div className={styles.mainInfo}>
-                      <h3 className={styles.equipmentName}>
-                        {eq.equipmentName}
-                      </h3>
-                      <div className={styles.priceWrapper}>
-                        <span className={styles.priceLabel}>ราคาเริ่มต้น</span>
-                        <span className={styles.priceValue}>
-                          ฿{eq.price.toLocaleString()} /วัน
-                        </span>
+                return (
+                  <li key={eq.equipmentId} className={styles.equipmentCard}>
+                    <div className={styles.cardImageSection}>
+                      <div
+                        className={`${styles.statusTag} ${
+                          isAvailable ? styles.available : styles.unavailable
+                        }`}
+                      >
+                        {isAvailable ? "ว่าง" : "ไม่ว่าง"}
+                      </div>
+                      <img
+                        src={`http://localhost:8080/uploads/images/${eq.equipmentImg}`}
+                        alt={eq.equipmentName}
+                        className={styles.equipmentImg}
+                      />
+                    </div>
+
+                    <div className={styles.cardInfoSection}>
+                      <div className={styles.mainInfo}>
+                        <h3 className={styles.equipmentName}>
+                          {eq.equipmentName}
+                        </h3>
+                        <div className={styles.priceWrapper}>
+                          <span className={styles.priceLabel}>
+                            ราคาเริ่มต้น
+                          </span>
+                          <span className={styles.priceValue}>
+                            ฿{Number(eq.price || 0).toLocaleString()} /วัน
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className={styles.details}>
+                        <h4>รายละเอียด</h4>
+                        <p>{eq.equipmentDetails}</p>
+                        <h4>คุณสมบัติ</h4>
+                        <p>{eq.equipmentFeature}</p>
+                        <h4>พื้นที่ให้บริการ</h4>
+                        <p>{eq.equipmentAddress}</p>
+                      </div>
+
+                      <div className={styles.bottomSection}>
+                        <div className={styles.reviews}>
+                          <span>
+                            รีวิว: {eq.viewsReviews || "ยังไม่มีรีวิว"}
+                          </span>
+                        </div>
+                        <label className={styles.checkboxLabel}>
+                          <input
+                            type="checkbox"
+                            checked={selectedEquipments.includes(
+                              eq.equipmentId
+                            )}
+                            onChange={() =>
+                              handleCheckboxChange(eq.equipmentId)
+                            }
+                            disabled={!isAvailable}
+                          />
+                          <span style={{ marginLeft: 8 }}>
+                            เลือกจองเครื่องจักร
+                          </span>
+                        </label>
                       </div>
                     </div>
-
-                    <div className={styles.details}>
-                      <h4>รายละเอียด</h4>
-                      <p>{eq.equipmentDetails}</p>
-                      <h4>คุณสมบัติ</h4>
-                      <p>{eq.equipmentFeature}</p>
-                      <h4>พื้นที่ให้บริการ</h4>
-                      <p>{eq.equipmentAddress}</p>
-                    </div>
-
-                    <div className={styles.bottomSection}>
-                      <div className={styles.reviews}>
-                        <span>รีวิว: {eq.viewsReviews || "ยังไม่มีรีวิว"}</span>
-                      </div>
-                      <label className={styles.checkboxLabel}>
-                        <input
-                          type="checkbox"
-                          checked={selectedEquipments.includes(eq.equipmentId)}
-                          onChange={() => handleCheckboxChange(eq.equipmentId)}
-                          disabled={eq.equipmentStatus !== "Available"}
-                        />
-                        <span style={{ marginLeft: 8 }}>
-                          เลือกจองเครื่องจักร
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
-          {/* แสดงฟอร์มจองเมื่อเลือกเครื่องจักรอย่างน้อย 1 รายการ */}
           {selectedEquipments.length > 0 && (
             <form className={styles.bookingForm} onSubmit={handleBookingSubmit}>
               <h3 className={styles.bookingTitle}>กรอกข้อมูลการจอง</h3>
@@ -338,12 +329,13 @@ export default function EquipmentPage() {
                   <textarea
                     className={styles.addressInput}
                     placeholder="กรุณากรอกที่อยู่จัดส่งโดยละเอียด"
-                    rows="4"
+                    rows={4}
                     value={changeAddress}
                     onChange={(e) => setChangeAddress(e.target.value)}
                   />
                 </div>
               </div>
+
               <div className={styles.selectedList}>
                 <b>เครื่องจักรที่เลือก:</b>
                 <ul>
@@ -354,6 +346,7 @@ export default function EquipmentPage() {
                     ))}
                 </ul>
               </div>
+
               <button className={styles.submitButton} type="submit">
                 ยืนยันการจอง
               </button>
