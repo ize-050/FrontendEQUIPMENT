@@ -66,6 +66,7 @@ const OwnerBookingsPage = () => {
   const getStatusColor = (status) => {
     const statusColors = {
       'pending': '#ffc107',
+      'confirmed': '#17a2b8',
       'waitpayment': '#17a2b8',
       'checkpayment': '#fd7e14',
       'approvepayment': '#28a745',
@@ -73,7 +74,8 @@ const OwnerBookingsPage = () => {
       'waitdelivery': '#6f42c1',
       'successdelivery': '#20c997',
       'return': '#6c757d',
-      'returnsuccess': '#28a745'
+      'returnsuccess': '#28a745',
+      'cancelled': '#6c757d'
     };
     return statusColors[status] || '#6c757d';
   };
@@ -81,6 +83,7 @@ const OwnerBookingsPage = () => {
   const getStatusText = (status) => {
     const statusTexts = {
       'pending': 'รอดำเนินการ',
+      'confirmed': 'ยืนยันการจอง - รอชำระเงิน',
       'waitpayment': 'รอชำระเงิน',
       'checkpayment': 'ตรวจสอบการชำระเงิน',
       'approvepayment': 'ชำระเงินเรียบร้อย',
@@ -88,7 +91,8 @@ const OwnerBookingsPage = () => {
       'waitdelivery': 'รอจัดส่ง',
       'successdelivery': 'จัดส่งเรียบร้อย',
       'return': 'คืนอุปกรณ์',
-      'returnsuccess': 'คืนอุปกรณ์สำเร็จ'
+      'returnsuccess': 'คืนอุปกรณ์สำเร็จ',
+      'cancelled': 'ยกเลิกการจอง'
     };
     return statusTexts[status] || status;
   };
@@ -132,6 +136,7 @@ const OwnerBookingsPage = () => {
             >
               <option value="all">สถานะทั้งหมด</option>
               <option value="pending">รอดำเนินการ</option>
+              <option value="confirmed">ยืนยันการจอง - รอชำระเงิน</option>
               <option value="waitpayment">รอชำระเงิน</option>
               <option value="checkpayment">ตรวจสอบการชำระเงิน</option>
               <option value="approvepayment">ชำระเงินเรียบร้อย</option>
@@ -140,6 +145,7 @@ const OwnerBookingsPage = () => {
               <option value="successdelivery">จัดส่งเรียบร้อย</option>
               <option value="return">คืนอุปกรณ์</option>
               <option value="returnsuccess">คืนอุปกรณ์สำเร็จ</option>
+              <option value="cancelled">ยกเลิกการจอง</option>
             </select>
           </div>
         </div>

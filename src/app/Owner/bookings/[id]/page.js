@@ -71,6 +71,7 @@ const BookingDetailPage = () => {
   const getStatusColor = (status) => {
     const statusColors = {
       'pending': '#ffc107',
+      'confirmed': '#17a2b8',
       'waitpayment': '#17a2b8',
       'checkpayment': '#fd7e14',
       'approvepayment': '#28a745',
@@ -78,7 +79,8 @@ const BookingDetailPage = () => {
       'waitdelivery': '#6f42c1',
       'successdelivery': '#20c997',
       'return': '#6c757d',
-      'returnsuccess': '#28a745'
+      'returnsuccess': '#28a745',
+      'cancelled': '#6c757d'
     };
     return statusColors[status] || '#6c757d';
   };
@@ -86,6 +88,7 @@ const BookingDetailPage = () => {
   const getStatusText = (status) => {
     const statusTexts = {
       'pending': 'รอดำเนินการ',
+      'confirmed': 'ยืนยันการจอง - รอชำระเงิน',
       'waitpayment': 'รอชำระเงิน',
       'checkpayment': 'ตรวจสอบการชำระเงิน',
       'approvepayment': 'ชำระเงินเรียบร้อย',
@@ -93,22 +96,25 @@ const BookingDetailPage = () => {
       'waitdelivery': 'รอจัดส่ง',
       'successdelivery': 'จัดส่งเรียบร้อย',
       'return': 'คืนอุปกรณ์',
-      'returnsuccess': 'คืนอุปกรณ์สำเร็จ'
+      'returnsuccess': 'คืนอุปกรณ์สำเร็จ',
+      'cancelled': 'ยกเลิกการจอง'
     };
     return statusTexts[status] || status;
   };
 
   const getAvailableStatuses = (currentStatus) => {
     const statusFlow = {
-      'pending': ['waitpayment'],
+      'pending': [], // ใช้ปุ่มพิเศษแทน
+      'confirmed': ['checkpayment'],
       'waitpayment': ['checkpayment'],
       'checkpayment': ['approvepayment', 'rejectpayment'],
       'approvepayment': ['waitdelivery'],
-      'rejectpayment': ['waitpayment'],
+      'rejectpayment': ['checkpayment'],
       'waitdelivery': ['successdelivery'],
       'successdelivery': ['return'],
       'return': ['returnsuccess'],
-      'returnsuccess': []
+      'returnsuccess': [],
+      'cancelled': []
     };
     return statusFlow[currentStatus] || [];
   };
@@ -185,7 +191,7 @@ const BookingDetailPage = () => {
     });
 
     if (result.isConfirmed) {
-      setUpdating(true);
+      setIsUpdatingStatus(true);
       try {
         const ownerAuth = JSON.parse(localStorage.getItem('ownerAuth'));
         const token = ownerAuth?.token;
@@ -234,7 +240,7 @@ const BookingDetailPage = () => {
     });
 
     if (result.isConfirmed) {
-      setUpdating(true);
+      setIsUpdatingStatus(true);
       try {
         const ownerAuth = JSON.parse(localStorage.getItem('ownerAuth'));
         const token = ownerAuth?.token;
@@ -265,7 +271,105 @@ const BookingDetailPage = () => {
           text: 'ไม่สามารถปฏิเสธการชำระเงินได้',
         });
       } finally {
-        setUpdating(false);
+        setIsUpdatingStatus(false);
+      }
+    }
+  };
+
+  const handleApproveBooking = async () => {
+    const result = await Swal.fire({
+      title: 'อนุมัติการจอง?',
+      text: 'คุณต้องการอนุมัติการจองนี้หรือไม่? เกษตรกรจะสามารถชำระเงินได้',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'อนุมัติ',
+      cancelButtonText: 'ยกเลิก'
+    });
+
+    if (result.isConfirmed) {
+      setIsUpdatingStatus(true);
+      try {
+        const ownerAuth = JSON.parse(localStorage.getItem('ownerAuth'));
+        const token = ownerAuth?.token;
+
+        await axios.put(
+          `http://localhost:8080/api/owner/bookings/approve-booking/${bookingId}`,
+          {},
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          }
+        );
+
+        Swal.fire({
+          icon: 'success',
+          title: 'อนุมัติสำเร็จ',
+          text: 'อนุมัติการจองเรียบร้อยแล้ว เกษตรกรสามารถชำระเงินได้แล้ว',
+          timer: 3000,
+          showConfirmButton: false,
+        });
+        fetchBookingDetail();
+      } catch (err) {
+        console.error('Error approving booking:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถอนุมัติการจองได้',
+        });
+      } finally {
+        setIsUpdatingStatus(false);
+      }
+    }
+  };
+
+  const handleRejectBooking = async () => {
+    const result = await Swal.fire({
+      title: 'ปฏิเสธการจอง?',
+      text: 'คุณต้องการปฏิเสธการจองนี้หรือไม่? การจองจะถูกยกเลิก',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'ปฏิเสธ',
+      cancelButtonText: 'ยกเลิก'
+    });
+
+    if (result.isConfirmed) {
+      setIsUpdatingStatus(true);
+      try {
+        const ownerAuth = JSON.parse(localStorage.getItem('ownerAuth'));
+        const token = ownerAuth?.token;
+
+        await axios.put(
+          `http://localhost:8080/api/owner/bookings/reject-booking/${bookingId}`,
+          {},
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          }
+        );
+
+        Swal.fire({
+          icon: 'success',
+          title: 'ปฏิเสธสำเร็จ',
+          text: 'ปฏิเสธการจองเรียบร้อยแล้ว',
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        fetchBookingDetail();
+      } catch (err) {
+        console.error('Error rejecting booking:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถปฏิเสธการจองได้',
+        });
+      } finally {
+        setIsUpdatingStatus(false);
       }
     }
   };
@@ -397,6 +501,29 @@ const BookingDetailPage = () => {
                 </span>
               </div>
 
+              {booking.bookingstatus === 'pending' && (
+                <div className={styles.bookingActions}>
+                  <h3>อนุมัติการจอง</h3>
+                  <p>กรุณาตรวจสอบรายละเอียดการจองและอนุมัติหรือปฏิเสธการจอง</p>
+                  <div className={styles.actionButtons}>
+                    <button 
+                      onClick={handleApproveBooking}
+                      className={`${styles.actionButton} ${styles.approveButton}`}
+                      disabled={isUpdatingStatus}
+                    >
+                      {isUpdatingStatus ? 'กำลังดำเนินการ...' : 'อนุมัติการจอง'}
+                    </button>
+                    <button 
+                      onClick={handleRejectBooking}
+                      className={`${styles.actionButton} ${styles.rejectButton}`}
+                      disabled={isUpdatingStatus}
+                    >
+                      {isUpdatingStatus ? 'กำลังดำเนินการ...' : 'ปฏิเสธการจอง'}
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {booking.bookingstatus === 'checkpayment' && (
                 <div className={styles.paymentActions}>
                   <h3>ตรวจสอบการชำระเงิน</h3>
@@ -416,7 +543,7 @@ const BookingDetailPage = () => {
                       className={`${styles.actionButton} ${styles.approveButton}`}
                       disabled={isUpdatingStatus}
                     >
-                      {isUpdatingStatus ? 'กำลังดำเนินการ...' : 'ตรวจสอบการชำระเงิน'}
+                      {isUpdatingStatus ? 'กำลังดำเนินการ...' : 'อนุมัติการชำระเงิน'}
                     </button>
                     <button 
                       onClick={handleRejectPayment}
